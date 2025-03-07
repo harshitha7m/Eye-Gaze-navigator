@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eye Tracker Control</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url(https://th.bing.com/th/id/R.88f0207cdf8d2f4436f04c61781a573b?rik=GbpKJWGqjC9oLw&riu=http%3a%2f%2f3.bp.blogspot.com%2f-heI5DNsCm34%2fTcWw6P1uqUI%2fAAAAAAAAA7E%2fBpaXcuthck8%2fs1600%2feyes.jpg&ehk=l1bptfLCYT6AIko1h1KqTkrB7cuPj2w1RJRDa8tUGo8%3d&risl=&pid=ImgRaw&r=0); /* Replace 'your-background-image.jpg' with the path to your image */
+            background-size: cover;
+            background-position: center;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.7); 
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            margin-top: 0;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Eye Tracker Control</h1>
+        <button id="onButton">Start Eye Tracker</button>
+        <button id="offButton">Stop Eye Tracker</button>
+    </div>
+
+    <script>
+        let intervalId;
+
+        document.getElementById('onButton').addEventListener('click', function() {
+            intervalId = setInterval(runEyeTracker, 100); // Run every 100 milliseconds
+        });
+
+        document.getElementById('offButton').addEventListener('click', function() {
+            clearInterval(intervalId);
+        });
+
+        function runEyeTracker() {
+            fetch('http://localhost:5000/start', {
+                method: 'POST'
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to start eye tracker');
+                }
+                return response.text();
+            })
+            .then(data => console.log(data))
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>
